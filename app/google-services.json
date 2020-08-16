@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "402277512510",
+    "firebase_url": "https://disasterdb-4bbf2.firebaseio.com",
+    "project_id": "disasterdb-4bbf2",
+    "storage_bucket": "disasterdb-4bbf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:402277512510:android:8ebcf815a87940b012e86f",
+        "android_client_info": {
+          "package_name": "com.example.disasterfasoulisproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "402277512510-t60vpk0kn0ap4s37j5i21cgalttkaaac.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAj1441Dg1y2478i-BhzN2dAtXTl9FVhP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "402277512510-t60vpk0kn0ap4s37j5i21cgalttkaaac.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
