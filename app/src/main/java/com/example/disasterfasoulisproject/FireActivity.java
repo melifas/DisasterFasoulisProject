@@ -12,6 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,6 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class FireActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener,LocationListener {
 
     private static  final int REQ_CODE = 10;
+    TextView txtfire;
     Button btnFireMessage;
     LocationManager locationManager;
     LocationListener locationListener;
@@ -33,6 +35,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire);
         btnFireMessage = findViewById(R.id.btnSentFireMessage);
+        txtfire = findViewById(R.id.txtFire);
 
         myauth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
@@ -51,7 +54,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQ_CODE);
         } else {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 3, this);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             Toast.makeText(this, "Location already granted", Toast.LENGTH_SHORT).show();
         }
     }
@@ -64,7 +67,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
         if (requestCode==REQ_CODE && grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
             if (ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)== PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 3000, 3, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
             }
         }else {
             Toast.makeText(this, "I need it", Toast.LENGTH_SHORT).show();
@@ -73,7 +76,14 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
     @Override
     public void onLocationChanged(Location location) {
-        
+
+        if (location==null){
+            txtfire.setText("Unable to Load Location. Please try again later");
+        }
+        else {
+            txtfire.setText("Βρίσκομαι στην τοποθεσία με γεωγραφικό μήκος : " + location.getLatitude() + "και γεωγραφικό πλάτος :  " + location.getLatitude() + " και παρατηρώ μια πυρκαϊά");
+        }
+
     }
 
     @Override
