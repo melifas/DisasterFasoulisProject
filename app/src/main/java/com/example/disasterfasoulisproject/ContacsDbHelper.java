@@ -11,10 +11,11 @@ public class ContacsDbHelper extends SQLiteOpenHelper {
     public static final String TEXT_TYPE = " TEXT";
     public static final String COMMA_SEP = ",";
 
+    //Φτιάχω πίνακα ή διαγράφω αν υπάρχι ο πίνακας(στις onCreate και OnUpgrade μεθόδους που υπάρχουν παρακάτω)
     private static final String SQL_CREATE_MOVIE_TABLE =
             "CREATE TABLE " + ContacsDbContract.ContacsEntry.TABLE_NAME + " (" +
                     ContacsDbContract.ContacsEntry._ID + " INTEGER PRIMARY KEY," +
-                    ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_TITLE + " TEXT," +
+                    ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_TITLE + TEXT_TYPE + COMMA_SEP +
                     ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_PHONE + TEXT_TYPE + ")";
 
 
@@ -23,7 +24,7 @@ public class ContacsDbHelper extends SQLiteOpenHelper {
 
     public ContacsDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        //SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
     }
 
     @Override
