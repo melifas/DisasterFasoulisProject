@@ -34,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void btn_SendAlertSMS(View view){
+        String message =
+    }
+
     //------------------------------Επιστροφή όλων των επαφών απο την βάση-------------------------------
     public List<Contacs> getAllContacts() {
         SQLiteDatabase db = mDBHelper.getReadableDatabase();
