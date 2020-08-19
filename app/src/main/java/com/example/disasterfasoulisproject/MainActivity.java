@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btn_SendAlertSMS(View view){
-        String message =
+        //String message =
     }
 
     //------------------------------Επιστροφή όλων των επαφών απο την βάση-------------------------------
