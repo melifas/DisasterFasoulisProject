@@ -8,12 +8,18 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
+
+    private  Button btnPlayMusic;
     private SensorManager sensorManager;
+    private MediaPlayer mediaPlayer;
+
     Sensor accelerometer;
 
     @Override
@@ -21,12 +27,58 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
 
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer = MediaPlayer.create(AccelerometerActivity.this,R.raw.count );
+
+        btnPlayMusic = findViewById(R.id.btnPlay);
+
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         sensorManager.registerListener((SensorEventListener) AccelerometerActivity.this, accelerometer,SensorManager.SENSOR_DELAY_NORMAL);
+
+        btnPlayMusic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mediaPlayer.isPlaying()){
+                    pauseMusic();
+                }else {
+                    playMusic();
+                }
+            }
+        });
         
     }
 
+    //------------------------------------Stop and Start Music Music----------------------------------//
+    public void pauseMusic(){
+        if (mediaPlayer!=null){
+            mediaPlayer.pause();
+            btnPlayMusic.setText("Play");
+        }
+    }
+
+    public void playMusic(){
+        if (mediaPlayer!=null){
+            mediaPlayer.start();
+            btnPlayMusic.setText("Pause");
+        }
+    }
+    //------------------------------------Stop and Start Music Music----------------------------------//
+
+    //-----------------------In Case Activity Is Destroyed and Music is Playing------------------------//
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer!=null){
+            mediaPlayer.pause();
+            mediaPlayer.release();
+        }
+    }
+
+    //------------------------------------------------------------------------------------------------//
+
+    //--------------Methods Implemented from SensorEventListener Interface-----------------------------//
 
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
@@ -52,6 +104,7 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }
+    //---------------------------------------------------------------------------------------------------//
 
     public void AlertDialog(View view){
         AlertDialog.Builder alert = new AlertDialog.Builder(AccelerometerActivity.this);
