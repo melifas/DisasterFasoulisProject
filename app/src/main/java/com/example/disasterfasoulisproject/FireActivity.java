@@ -188,7 +188,8 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
             latitude = loc.getLatitude();
             longtitude = loc.getLongitude();
 
-            String message = String.valueOf(latitude)  + String.valueOf(longtitude);
+            String message = "Βρίσκομαι στην τοποθεσία με γεωγραφικό μήκος " + String.valueOf(latitude) + " και γεωγραφικό πλάτος "  + String.valueOf(longtitude) +
+                    " και παρατηρώ μια πυρκαϊά";
             String tel = "6984498150";
 
             if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){

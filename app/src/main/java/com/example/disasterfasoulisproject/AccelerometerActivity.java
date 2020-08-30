@@ -2,11 +2,14 @@ package com.example.disasterfasoulisproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
@@ -48,5 +51,25 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
+    }
+
+    public void AlertDialog(View view){
+        AlertDialog.Builder alert = new AlertDialog.Builder(AccelerometerActivity.this);
+        alert.setMessage("Do you want to Cancell Alert ? ").setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alrt = alert.create();
+        alrt.setTitle("Fall Detected");
+        alrt.show();
     }
 }
