@@ -10,15 +10,26 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class AccelerometerActivity extends AppCompatActivity implements SensorEventListener {
 
-    private  Button btnPlayMusic;
+    public static final long START_TIME_IN_MILLIS = 30000;
+    public long timeLeftInMillis = START_TIME_IN_MILLIS;
+
+
+
+    private  Button btnPlayMusic,btnStartStopTime;
+    TextView txtTimeCountDown;
     private SensorManager sensorManager;
     private MediaPlayer mediaPlayer;
+
+    private CountDownTimer countDownTimer;
+    private boolean timerRunning;
 
     Sensor accelerometer;
 
@@ -27,10 +38,13 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
 
+        txtTimeCountDown = findViewById(R.id.txtTime);
+
         mediaPlayer = new MediaPlayer();
         mediaPlayer = MediaPlayer.create(AccelerometerActivity.this,R.raw.count );
 
         btnPlayMusic = findViewById(R.id.btnPlay);
+        btnStartStopTime = findViewById(R.id.btnStartPause);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -46,8 +60,64 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
                 }
             }
         });
+
+        btnStartStopTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (timerRunning){
+                    pauseTimer();
+                }else {
+                    startTimer();
+                }
+            }
+        });
+
+        updateCountDownText();
         
     }
+
+    //------------------------------Methods for CountDown--------------------------------------------//
+
+    private void  pauseTimer(){
+
+        countDownTimer.cancel();
+        timerRunning = false;
+        btnStartStopTime.setText("Start");
+    }
+
+    private void startTimer(){
+        countDownTimer = new CountDownTimer(timeLeftInMillis,1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                timeLeftInMillis = millisUntilFinished;
+                updateCountDownText();
+
+            }
+
+            @Override
+            public void onFinish() {
+                timerRunning = false;
+                btnStartStopTime.setText("Start");
+                btnStartStopTime.setVisibility(View.INVISIBLE);
+            }
+        }.start();
+
+        timerRunning = true;
+        btnStartStopTime.setText("pause");
+    }
+
+    public  void updateCountDownText(){
+        int minutes = (int) timeLeftInMillis/1000/60;
+        int seconds = (int) (timeLeftInMillis/1000) % 60;
+
+        String timeLeftFormated = String.format("%02d:%02d",minutes,seconds);
+        txtTimeCountDown.setText(timeLeftFormated);
+    }
+
+
+
+    //----------------------------------------------------------------------------------------------//
+
 
     //------------------------------------Stop and Start Music Music----------------------------------//
     public void pauseMusic(){
