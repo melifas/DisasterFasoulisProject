@@ -12,6 +12,8 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
@@ -38,11 +40,13 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class FireActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, LocationListener {
 
-    private Uri filePath;
+    public Uri filePath;
     private static final int REQ_CODE = 10;
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -54,6 +58,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
     FirebaseAuth myauth;
     FirebaseDatabase database;
 
+    ContacsDbHelper mDBHelper;
     Location loc;
     double latitude;
     double longtitude;
@@ -69,6 +74,8 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire);
+        mDBHelper = new ContacsDbHelper(this);
+
         btnFireMessage = findViewById(R.id.btnSentFireMessage);
         btnUploadDisasterImage = findViewById(R.id.btnUploadDisasterImage);
         btnChooseImage = findViewById(R.id.btnChooseImage);
@@ -110,7 +117,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,1);
+        startActivityForResult(Intent.createChooser(intent,"SelectImage"),1);
     }
 
 
@@ -170,6 +177,36 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
     }
 
 
+    //------------------------------Επιστροφή όλων των επαφών απο την βάση-------------------------------
+    public List<Contacs> getAllContacts() {
+        SQLiteDatabase db = mDBHelper.getReadableDatabase();
+        List<Contacs> contacsList = new ArrayList<Contacs>();
+        String[] projection = {
+                ContacsDbContract.ContacsEntry._ID,
+                ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_TITLE,
+                ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_PHONE
+        };
+        Cursor c = db.query(
+                ContacsDbContract.ContacsEntry.TABLE_NAME,  // The table to query
+                projection,                               // The columns to return
+                null,                                     // null columns means all
+                null,                                     // null values for the WHERE clause
+                null,                                     // don't group the rows
+                null,                                     // don't filter by row groups
+                null                                      // don't sort
+        );
+        while (c.moveToNext()) {
+            Contacs contacs = new Contacs(c.getInt(c.getColumnIndex(ContacsDbContract.ContacsEntry._ID)),
+                    c.getString(c.getColumnIndex(ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_TITLE)),
+                    c.getString(c.getColumnIndex(ContacsDbContract.ContacsEntry.COLUMN_NAME_CONTACT_PHONE)));
+            contacsList.add(contacs);
+        }
+        db.close();
+        return contacsList;
+    }
+//----------------------------------------------------------------------------------------------------------------//
+
+
     public void btn_SendAlertSMS(View view) {
         if (locationManager != null) {
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -188,20 +225,33 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
             latitude = loc.getLatitude();
             longtitude = loc.getLongitude();
 
-            String message = "Βρίσκομαι στην τοποθεσία με γεωγραφικό μήκος " + String.valueOf(latitude) + " και γεωγραφικό πλάτος "  + String.valueOf(longtitude) +
-                    " και παρατηρώ μια πυρκαϊά";
-            String tel = "6984498150";
+            List<Contacs> contactslist = getAllContacts();
 
-            if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
-                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},11);
-            }else {
-                SmsManager sms = SmsManager.getDefault();
-                sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
-                Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
+            for (Contacs contact : contactslist){
+                String message = String.valueOf(latitude) + String.valueOf(longtitude);
+                String tel = contact.getPhoneNumber();
 
-
-
+                if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},11);
+                }else {
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
+                    Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
+                }
             }
+
+           /* for (int i = 0; i<contactslist.size();i++ ){
+                String message = String.valueOf(latitude) + String.valueOf(longtitude);
+                String tel = conta
+
+                if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},11);
+                }else {
+                    SmsManager sms = SmsManager.getDefault();
+                    sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
+                    Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
+                }
+            }*/
 
 
         }
@@ -215,6 +265,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
             filePath = data.getData();
             //Bitmap  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
             imageView.setImageURI(filePath);
+            uploadImage();
         }
     }
 
