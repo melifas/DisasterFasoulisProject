@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnReprotFire, btnGoToFallActivity;
+    Button btnReprotFire, btnGoToFallActivity,btnGoTest;
     ContacsDbHelper mDBHelper;
 
     @Override
@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         btnReprotFire = findViewById(R.id.btnFire);
+        btnGoTest = findViewById(R.id.btnGoTest);
         btnGoToFallActivity = findViewById(R.id.btnGoToFallView);
         mDBHelper = new ContacsDbHelper(this);
 
@@ -38,6 +39,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,AccelerometerActivity.class));
+            }
+        });
+
+        btnGoTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,TestImageActivity.class));
             }
         });
     }

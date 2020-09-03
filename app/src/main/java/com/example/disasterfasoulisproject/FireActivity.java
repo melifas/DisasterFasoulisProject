@@ -38,6 +38,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         btnFireMessage = findViewById(R.id.btnSentFireMessage);
         btnUploadDisasterImage = findViewById(R.id.btnUploadDisasterImage);
         btnChooseImage = findViewById(R.id.btnChooseImage);
-        txtfire = findViewById(R.id.txtFire);
+        txtfire = findViewById(R.id.txtfire);
         imageView = findViewById(R.id.imageView);
 
         storage = FirebaseStorage.getInstance();
@@ -117,7 +118,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent,"SelectImage"),1);
+        startActivityForResult(intent,1);
     }
 
 
@@ -173,7 +174,6 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 progressDialog.setMessage("Uploaded " + progres + "%");
             }
         });
-
     }
 
 
@@ -239,21 +239,6 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                     Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
                 }
             }
-
-           /* for (int i = 0; i<contactslist.size();i++ ){
-                String message = String.valueOf(latitude) + String.valueOf(longtitude);
-                String tel = conta
-
-                if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
-                    ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},11);
-                }else {
-                    SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
-                    Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
-                }
-            }*/
-
-
         }
     }
 
@@ -261,11 +246,15 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode==1 && requestCode == RESULT_OK && data != null && data.getData()!=null){
+        if (requestCode==1  ){
             filePath = data.getData();
             //Bitmap  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
-            imageView.setImageURI(filePath);
-            uploadImage();
+            Bitmap image = (Bitmap) data.getExtras().get("data");
+
+            //Picasso.get().load(filePath).resize(50,50).into(imageView);
+            //imageView.setImageURI(filePath);
+            imageView.setImageBitmap(image);
+            //uploadImage();
         }
     }
 
