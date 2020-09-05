@@ -217,6 +217,8 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                 //                                          int[] grantResults)
                 // to handle the case where the user grants the permission. See the documentation
                 // for ActivityCompat#requestPermissions for more details.
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION}, REQ_CODE);
+
                 return;
             }
             loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
