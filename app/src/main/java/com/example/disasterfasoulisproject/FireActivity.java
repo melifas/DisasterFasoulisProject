@@ -248,12 +248,17 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
         if (requestCode==1  ){
             filePath = data.getData();
-            //Bitmap  bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
-            Bitmap image = (Bitmap) data.getExtras().get("data");
+            Bitmap  bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),filePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //Bitmap image = (Bitmap) data.getExtras().get("data");
 
             //Picasso.get().load(filePath).resize(50,50).into(imageView);
             //imageView.setImageURI(filePath);
-            imageView.setImageBitmap(image);
+            imageView.setImageBitmap(bitmap);
             //uploadImage();
         }
     }
