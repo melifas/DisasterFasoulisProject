@@ -229,7 +229,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
             List<Contacs> contactslist = getAllContacts();
 
-            for (Contacs contact : contactslist){
+           /* for (Contacs contact : contactslist){
                 String message = String.valueOf(latitude) + String.valueOf(longtitude);
                 String tel = contact.getPhoneNumber();
 
@@ -240,7 +240,29 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                     sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
                     Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
                 }
-            }
+            }*/
+
+
+            StringBuffer buffer =  new StringBuffer();
+            buffer.append("Βρίσκομαι σε γεωγρ. μήκος");
+            buffer.append(String.valueOf(latitude));
+            buffer.append(" και γεωγραφικό πλάτος ");
+            buffer.append(String.valueOf(longtitude));
+            buffer.append(" και παρατηρώ μια πυρκαγιά");
+
+            String tel = "6984498150";
+            SmsManager sms = SmsManager.getDefault();
+
+            ArrayList<String> parts = sms.divideMessage(buffer.toString());
+            ArrayList<PendingIntent> sendList = new ArrayList<>();
+            sendList.add(sentPI);
+
+            ArrayList<PendingIntent> deliverList = new ArrayList<>();
+            deliverList.add(deliveredPI);
+        //!!!!!!Προσοχή με απλο sendMessage στέλνει μόνο μικρό μήκους sms. Για το συγκεκριμένο μήκος θέλει sendMultipartTextMessage αλλιώς δεν το στέλνει
+            sms.sendMultipartTextMessage(tel,null,parts,sendList,deliverList);
+            Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
+
         }
     }
 
