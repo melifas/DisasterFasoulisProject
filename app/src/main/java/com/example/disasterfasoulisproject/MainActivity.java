@@ -11,12 +11,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.disasterfasoulisproject.Model.Earthquake;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btnReprotFire, btnGoToFallActivity,btnGoTest;
+    Button btnReprotFire, btnGoToFallActivity,btnGoTest,btnGoEathquake;
     ContacsDbHelper mDBHelper;
 
     @Override
@@ -25,8 +27,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         btnReprotFire = findViewById(R.id.btnFire);
         btnGoTest = findViewById(R.id.btnGoTest);
+        btnGoEathquake = findViewById(R.id.btnGoToEarthquake);
         btnGoToFallActivity = findViewById(R.id.btnGoToFallView);
         mDBHelper = new ContacsDbHelper(this);
+
+        btnGoEathquake.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Earthquakes.class));
+            }
+        });
 
         btnReprotFire.setOnClickListener(new View.OnClickListener() {
             @Override

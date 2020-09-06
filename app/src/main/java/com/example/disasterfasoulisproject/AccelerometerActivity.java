@@ -25,6 +25,8 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
     public static final long START_TIME_IN_MILLIS = 30000;
     public long timeLeftInMillis = START_TIME_IN_MILLIS;
 
+
+    //-------------------Object Created for countDown---------------------------------------------//
     CountDownTimer countDownTimer = new CountDownTimer(timeLeftInMillis,1000) {
         @Override
         public void onTick(long millisUntilFinished) {
@@ -41,7 +43,7 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
         }
     };
 
-
+//--------------------------------------------------------------------------------------------------//
 
     private  Button btnPlayMusic,btnTestAlert, btnAbortAlarm;
     TextView txtTimeCountDown;
@@ -217,37 +219,6 @@ public class AccelerometerActivity extends AppCompatActivity implements SensorEv
 
     }
     //---------------------------------------------------------------------------------------------------//
-/*
-    public void AlertDialog(View view){
-        AlertDialog.Builder alert = new AlertDialog.Builder(AccelerometerActivity.this);
-        alert.setMessage("Do you want to Cancell Alert ? ").setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-        AlertDialog alrt = alert.create();
-        alrt.setTitle("Fall Detected");
-        alrt.show();
-
-        alrt.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            @Override
-            public void onShow(DialogInterface dialog) {
-                startTimer();
-                playMusic();
-            }
-        });
-        alrt.show();
-    }*/
-
 
     public void AlertDialog(View view) {
         AlertDialog dialog = new AlertDialog.Builder(this)

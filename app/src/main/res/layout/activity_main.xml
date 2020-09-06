@@ -56,4 +56,14 @@
         app:layout_constraintEnd_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+    <Button
+        android:id="@+id/btnGoToEarthquake"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="50dp"
+        android:text="GoToEarthquake"
+        app:layout_constraintStart_toStartOf="@+id/btnShowContacts"
+        app:layout_constraintTop_toBottomOf="@+id/btnShowContacts" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
