@@ -229,21 +229,38 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
 
             List<Contacs> contactslist = getAllContacts();
 
-           /* for (Contacs contact : contactslist){
-                String message = String.valueOf(latitude) + String.valueOf(longtitude);
+            for (Contacs contact : contactslist){
+                //String message = String.valueOf(latitude) + String.valueOf(longtitude);
+
+                StringBuffer buffer =  new StringBuffer();
+                buffer.append("Βρίσκομαι σε γεωγρ. μήκος");
+                buffer.append(String.valueOf(latitude));
+                buffer.append(" και γεωγραφικό πλάτος ");
+                buffer.append(String.valueOf(longtitude));
+                buffer.append(" και παρατηρώ μια πυρκαγιά");
+
+
                 String tel = contact.getPhoneNumber();
 
                 if (ActivityCompat.checkSelfPermission(this,Manifest.permission.SEND_SMS)!=PackageManager.PERMISSION_GRANTED){
                     ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},11);
                 }else {
                     SmsManager sms = SmsManager.getDefault();
-                    sms.sendTextMessage(tel,null,message,sentPI,deliveredPI);
+                    //sms.sendTextMessage(tel,null,buffer,sentPI,deliveredPI);
+                    ArrayList<String> parts = sms.divideMessage(buffer.toString());
+                    ArrayList<PendingIntent> sendList = new ArrayList<>();
+                    sendList.add(sentPI);
+
+                    ArrayList<PendingIntent> deliverList = new ArrayList<>();
+                    deliverList.add(deliveredPI);
+                    //!!!!!!Προσοχή με απλο sendMessage στέλνει μόνο μικρό μήκους sms. Για το συγκεκριμένο μήκος θέλει sendMultipartTextMessage αλλιώς δεν το στέλνει
+                    sms.sendMultipartTextMessage(tel,null,parts,sendList,deliverList);
                     Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
                 }
-            }*/
+            }
 
 
-            StringBuffer buffer =  new StringBuffer();
+            /*StringBuffer buffer =  new StringBuffer();
             buffer.append("Βρίσκομαι σε γεωγρ. μήκος");
             buffer.append(String.valueOf(latitude));
             buffer.append(" και γεωγραφικό πλάτος ");
@@ -261,7 +278,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
             deliverList.add(deliveredPI);
         //!!!!!!Προσοχή με απλο sendMessage στέλνει μόνο μικρό μήκους sms. Για το συγκεκριμένο μήκος θέλει sendMultipartTextMessage αλλιώς δεν το στέλνει
             sms.sendMultipartTextMessage(tel,null,parts,sendList,deliverList);
-            Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Message Sent", Toast.LENGTH_SHORT).show();*/
 
         }
     }
