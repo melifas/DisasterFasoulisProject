@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">DisasterFasoulisProject</string>
+    <string name="hello_world">Hello World!</string>
+    <string name="btn_GoTest">GoTest</string>
+    <string name="btn_report_fire">Report Fire</string>
+    <string name="btn_gotofallview">GoToFallView</string>
+    <string name="btnshowcontacts">ShowContacts</string>
+    <string name="btn_gotoearthquake">GoToEarthquake</string>
+    <string name="btn_click_to_report_fire">Click to report Fire</string>
+    <string name="btn_upload_disaster_image">Upload Disaster Image</string>
+    <string name="btn_choose_image">CHOOSE IMAGE</string>
+    <string name="txt_password">password....</string>
+    <string name="txt_email" translatable="false">email...</string>
+    <string name="btn_login">Login</string>
+    <string name="txt_register_email" translatable="false">email...</string>
+    <string name="txt_register_password" translatable="false">password...</string>
+    <string name="txt_registerconfirm_password">confirm password..</string>
+    <string name="rbtn_egister">Register</string>
+    <string name="btn_abort_alarm">Abort Alarm</string>
+    <string name="btn_play">Play</string>
 </resources>

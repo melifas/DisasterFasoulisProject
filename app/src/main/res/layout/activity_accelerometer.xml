@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="323dp"
         android:layout_marginEnd="24dp"
-        android:text="Play"
+        android:text="@string/btn_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnAbortAlarm"
         app:layout_constraintTop_toTopOf="parent" />
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Abort Alarm"
+        android:text="@string/btn_abort_alarm"
         app:layout_constraintBaseline_toBaselineOf="@+id/btnPlay"
         app:layout_constraintEnd_toStartOf="@+id/btnPlay"
         app:layout_constraintStart_toStartOf="parent" />

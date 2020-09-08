@@ -12,7 +12,7 @@
         android:id="@+id/txtfire"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello"/>
+        />
 
 
     <LinearLayout
@@ -43,7 +43,7 @@
         android:layout_height="wrap_content"
 
         android:onClick="btn_SendAlertSMS"
-        android:text="Click to report Fire"
+        android:text="@string/btn_click_to_report_fire"
         app:layout_constraintBottom_toTopOf="@+id/btnUploadDisasterImage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btnChooseImage"
@@ -54,7 +54,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
-        android:text="Upload Disaster Image"
+        android:text="@string/btn_upload_disaster_image"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSentFireMessage" />
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:layout_marginBottom="33dp"
-            android:text="CHOOSE IMAGE"
+            android:text="@string/btn_choose_image"
             app:layout_constraintBottom_toTopOf="@+id/btnUploadDisasterImage"
             app:layout_constraintEnd_toStartOf="@+id/btnSentFireMessage"
             app:layout_constraintStart_toStartOf="parent"

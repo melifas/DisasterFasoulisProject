@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">DisasterFasoulisProject</string>
+    <string name="btn_GoTest">Κάντε τεστ</string>
+    <string name="btn_report_fire">Αναφορά φωτΙάς</string>
+    <string name="btn_gotofallview">Μεταφορά σε πτώση</string>
+    <string name="btnshowcontacts">Δείτε επαφές</string>
+    <string name="btn_gotoearthquake">Μεταφορά σε πτώση</string>
+    <string name="btn_click_to_report_fire">Κλικ για αναφορά φωτιάς</string>
+    <string name="btn_upload_disaster_image">Ανέβασμα Εικόνας φωτιάς</string>
+    <string name="btn_choose_image">Επιλογή εικόνας</string>
+    <string name="txt_password">κωδικός</string>
+    <string name="btn_login">Είσοδος</string>
+    <string name="txt_registerconfirm_password">επιβεβαίωση password</string>
+    <string name="rbtn_egister">Εγγραφή</string>
+    <string name="btn_abort_alarm">Ακύρωση συναγερμού</string>
+    <string name="btn_play">Έναρξη</string>
+</resources>
