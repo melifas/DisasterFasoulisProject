@@ -3,6 +3,8 @@ package com.example.disasterfasoulisproject.Model;
 public class Earthquake {
     private String place;
     private double magnitude;
+    private String offsetlocation;
+    private String primarylocation;
     private long time;
     private String detailLink;
     private String type;
@@ -10,6 +12,15 @@ public class Earthquake {
     private double lot;
 
     public Earthquake() {
+    }
+
+    public Earthquake(double magnitude, long time, String detailLink, String type, double lat, double lot) {
+        this.magnitude = magnitude;
+        this.time = time;
+        this.detailLink = detailLink;
+        this.type = type;
+        this.lat = lat;
+        this.lot = lot;
     }
 
     public Earthquake(String place, double magnitude, long time, String detailLink, String type, double lat, double lot) {
