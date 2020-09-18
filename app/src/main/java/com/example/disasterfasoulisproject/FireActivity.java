@@ -254,6 +254,8 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                                                     + (int)progress + "%");
                                 }
                             });
+        }else {
+            Toast.makeText(this, "Please select an Image First", Toast.LENGTH_SHORT).show();
         }
     }
 
