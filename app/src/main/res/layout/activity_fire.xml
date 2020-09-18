@@ -26,7 +26,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="108dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:background="@drawable/addborder"
+
+android:scaleType="centerCrop"
+        android:src="@drawable/picture"
+        />
     </LinearLayout>
 
 

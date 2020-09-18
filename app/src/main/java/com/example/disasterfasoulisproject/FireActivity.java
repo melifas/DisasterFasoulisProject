@@ -2,6 +2,7 @@ package com.example.disasterfasoulisproject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -15,6 +16,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -47,6 +50,7 @@ import java.util.UUID;
 
 public class FireActivity extends AppCompatActivity implements FirebaseAuth.AuthStateListener, LocationListener {
 
+    private static final int PICK_IMAGE_REQUEST =22 ;
     public Uri filePath;
     private static final int REQ_CODE = 10;
     private FirebaseStorage storage;
@@ -58,6 +62,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
     LocationListener locationListener;
     FirebaseAuth myauth;
     FirebaseDatabase database;
+
 
     ContacsDbHelper mDBHelper;
     Location loc;
@@ -76,6 +81,13 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fire);
         mDBHelper = new ContacsDbHelper(this);
+
+        ActionBar actionBar;
+        actionBar = getSupportActionBar();
+        ColorDrawable colorDrawable
+                = new ColorDrawable(
+                Color.parseColor("#0F9D58"));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
         btnFireMessage = findViewById(R.id.btnSentFireMessage);
         btnUploadDisasterImage = findViewById(R.id.btnUploadDisasterImage);
@@ -107,25 +119,160 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         btnChooseImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                chooseImage();
+                SelectImage();
             }
         });
 
     }
 
+    //------------------to be tested------------------//
+    // Select Image method
+    private void SelectImage()
+    {
 
-    private void chooseImage() {
+        // Defining Implicit Intent to mobile gallery
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent,1);
+        startActivityForResult(
+                Intent.createChooser(
+                        intent,
+                        "Select Image from here..."),
+                PICK_IMAGE_REQUEST);
+    }
+    //--------------------------------------------//
+
+    @Override
+    protected void onActivityResult(int requestCode,
+                                    int resultCode,
+                                    Intent data)
+    {
+
+        super.onActivityResult(requestCode,
+                resultCode,
+                data);
+
+        // checking request code and result code
+        // if request code is PICK_IMAGE_REQUEST and
+        // resultCode is RESULT_OK
+        // then set image in the image view
+        if (requestCode == PICK_IMAGE_REQUEST
+                && resultCode == RESULT_OK
+                && data != null
+                && data.getData() != null) {
+
+            // Get the Uri of data
+            filePath = data.getData();
+            try {
+
+                // Setting image on image view using Bitmap
+                Bitmap bitmap = MediaStore
+                        .Images
+                        .Media
+                        .getBitmap(
+                                getContentResolver(),
+                                filePath);
+                imageView.setImageBitmap(bitmap);
+            }
+
+            catch (IOException e) {
+                // Log the exception
+                e.printStackTrace();
+            }
+        }
+    }
+    //-----------------------------------------------
+    // UploadImage method
+    private void uploadImage()
+    {
+        if (filePath != null) {
+
+            // Code for showing progressDialog while uploading
+            final ProgressDialog progressDialog
+                    = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            // Defining the child of storageReference
+            StorageReference ref
+                    = storageReference
+                    .child(
+                            "images/"
+                                    + UUID.randomUUID().toString());
+
+            // adding listeners on upload
+            // or failure of image
+            ref.putFile(filePath)
+                    .addOnSuccessListener(
+                            new OnSuccessListener<UploadTask.TaskSnapshot>() {
+
+                                @Override
+                                public void onSuccess(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+
+                                    // Image uploaded successfully
+                                    // Dismiss dialog
+                                    progressDialog.dismiss();
+                                    Toast
+                                            .makeText(FireActivity.this,
+                                                    "Image Uploaded!!",
+                                                    Toast.LENGTH_SHORT)
+                                            .show();
+                                }
+                            })
+
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e)
+                        {
+
+                            // Error, Image not uploaded
+                            progressDialog.dismiss();
+                            Toast
+                                    .makeText(FireActivity.this,
+                                            "Failed " + e.getMessage(),
+                                            Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    })
+                    .addOnProgressListener(
+                            new OnProgressListener<UploadTask.TaskSnapshot>() {
+
+                                // Progress Listener for loading
+                                // percentage on the dialog box
+                                @Override
+                                public void onProgress(
+                                        UploadTask.TaskSnapshot taskSnapshot)
+                                {
+                                    double progress
+                                            = (100.0
+                                            * taskSnapshot.getBytesTransferred()
+                                            / taskSnapshot.getTotalByteCount());
+                                    progressDialog.setMessage(
+                                            "Uploaded "
+                                                    + (int)progress + "%");
+                                }
+                            });
+        }
     }
 
 
 
-    private void uploadImage() {
 
-       /* final ProgressDialog progressDialog = new ProgressDialog(this);
+
+   /* private void chooseImage() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent,1);
+    }*/
+
+
+
+   /* private void uploadImage() {
+
+       *//* final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Uploading...");
         progressDialog.show();
         if (filePath!=null){
@@ -143,7 +290,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
                     progressDialog.setMessage("Uploaded " + progres + "%");
                 }
             });
-        }*/
+        }*//*
 
         //Uri file = Uri.fromFile(new File("path/to/images/rivers.jpg"));
 
@@ -154,27 +301,28 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         final String randomkey = UUID.randomUUID().toString();
         StorageReference riversRef = storageReference.child("images/" + randomkey);
 
-        riversRef.putFile(filePath)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        progressDialog.dismiss();
-                       Snackbar.make(findViewById(android.R.id.content),"Image Uploaded", Snackbar.LENGTH_LONG).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Toast.makeText(FireActivity.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
-                double progres = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                progressDialog.setMessage("Uploaded " + progres + "%");
-            }
-        });
-    }
+
+            riversRef.putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            progressDialog.dismiss();
+                            Snackbar.make(findViewById(android.R.id.content),"Image Uploaded", Snackbar.LENGTH_LONG).show();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Toast.makeText(FireActivity.this, "Failed to Upload", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    double progres = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded " + (int)progres + "%");
+                }
+            });
+    }*/
 
 
     //------------------------------Επιστροφή όλων των επαφών απο την βάση-------------------------------
@@ -283,7 +431,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
         }
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -302,7 +450,7 @@ public class FireActivity extends AppCompatActivity implements FirebaseAuth.Auth
             imageView.setImageBitmap(bitmap);
             //uploadImage();
         }
-    }
+    }*/
 
     //----------------------------- Methods for permission-------------------------------------------------------//
     public void runpermision(){
