@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context=".RegisterActivity">
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="106dp"
+        android:layout_marginTop="52dp"
         android:text="@string/rbtn_egister"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.532"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edtconfirmpass" />
 
@@ -20,11 +22,13 @@
         android:id="@+id/edtpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="217dp"
+        android:layout_marginTop="320dp"
+        android:drawableLeft="@drawable/ic_action_password"
         android:ems="10"
         android:hint="@string/txt_register_password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,11 +36,12 @@
         android:id="@+id/edtconfirmpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="36dp"
         android:ems="10"
         android:hint="@string/txt_registerconfirm_password"
         android:inputType="textPassword"
+        android:drawableLeft="@drawable/ic_action_password"
         app:layout_constraintStart_toStartOf="@+id/edtpass"
         app:layout_constraintTop_toBottomOf="@+id/edtpass" />
 
@@ -46,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp"
         android:layout_marginBottom="34dp"
+        android:drawableLeft="@drawable/ic_action_mail"
         android:ems="10"
         android:hint="@string/txt_register_email"
         android:inputType="textPersonName"
